@@ -44,8 +44,10 @@
         @keyframes dblHeartPop{0%{opacity:0;transform:scale(0) rotate(-15deg)}20%{opacity:1;transform:scale(1.3) rotate(5deg)}40%{transform:scale(0.95) rotate(-3deg)}60%{transform:scale(1.05)}80%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.2) translateY(-40px)}}
 
         /* Shake hint */
-        .shake-hint{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.08);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:10px 20px;font-size:11px;color:var(--text-secondary);z-index:60;animation:fadeSlideUp 1s ease-out 2s both;letter-spacing:1px;white-space:nowrap}
-        .shake-hint.hidden{opacity:0;pointer-events:none;transition:opacity 0.5s}
+        .surprise-btn{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,rgba(232,67,147,0.2),rgba(108,92,231,0.2));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(232,67,147,0.3);border-radius:50px;padding:14px 28px;font-size:14px;font-family:'Outfit',sans-serif;color:var(--blush);z-index:60;animation:fadeSlideUp 1s ease-out 2s both,surprisePulse 3s ease-in-out infinite;letter-spacing:1px;white-space:nowrap;cursor:pointer;transition:background 0.3s,border-color 0.3s,color 0.3s}
+        .surprise-btn:active{transform:translateX(-50%) scale(0.92)}
+        .surprise-btn.used{background:rgba(0,184,148,0.15);border-color:rgba(0,184,148,0.3);color:#00b894;animation:fadeSlideUp 1s ease-out 2s both}
+        @keyframes surprisePulse{0%,100%{box-shadow:0 0 0 0 rgba(232,67,147,0.3)}50%{box-shadow:0 0 20px 4px rgba(232,67,147,0.15)}}
 
         /* Confetti */
         .confetti{position:fixed;z-index:200;pointer-events:none;animation:confettiFall linear forwards}
@@ -140,7 +142,7 @@
     <canvas class="touch-canvas" id="touchCanvas"></canvas>
 
     <!-- Shake hint -->
-    <div class="shake-hint" id="shakeHint">📳 Shake your phone for a surprise!</div>
+    <button class="surprise-btn" id="surpriseBtn">🎁 Tap for a Surprise!</button>
 
     <!-- Secret toast -->
     <div class="secret-toast" id="secretToast">
@@ -315,18 +317,14 @@ document.getElementById('heroTitle').addEventListener('click',()=>{
     if(secretTaps===5){document.getElementById('secretToast').classList.add('show');haptic();try{navigator.vibrate&&navigator.vibrate([100,50,100,50,200])}catch(e){}}
 });
 
-// ─── SHAKE DETECTOR ───
-let shakeThreshold=25,lastX=null,lastY=null,lastZ=null,shaked=false;
-window.addEventListener('devicemotion',e=>{
-    const a=e.accelerationIncludingGravity;if(!a)return;
-    if(lastX!==null){
-        const d=Math.abs(a.x-lastX)+Math.abs(a.y-lastY)+Math.abs(a.z-lastZ);
-        if(d>shakeThreshold&&!shaked){shaked=true;fireConfetti(120);haptic();try{navigator.vibrate&&navigator.vibrate([100,50,100,50,100])}catch(e){}
-            document.getElementById('shakeHint').classList.add('hidden');
-            setTimeout(()=>shaked=false,3000);
-        }
-    }
-    lastX=a.x;lastY=a.y;lastZ=a.z;
+// ─── SURPRISE BUTTON ───
+const surpriseBtn=document.getElementById('surpriseBtn');
+let surpriseUsed=false;
+surpriseBtn.addEventListener('click',()=>{
+    fireConfetti(120);setTimeout(emojiRain,300);
+    haptic();
+    if(!surpriseUsed){surpriseUsed=true;surpriseBtn.textContent='🎉 Surprise!!! 💖';surpriseBtn.classList.add('used');setTimeout(()=>{surpriseBtn.textContent='🎁 Tap again? 😼';surpriseBtn.classList.remove('used')},3000)}
+    else{surpriseBtn.textContent='🎉 More confetti!!! ✨';surpriseBtn.classList.add('used');setTimeout(()=>{surpriseBtn.textContent='🎁 One more? 😏';surpriseBtn.classList.remove('used')},3000)}
 });
 
 // ─── GYROSCOPE TILT PARALLAX ───
@@ -343,8 +341,7 @@ document.addEventListener('mousemove',e=>{
     document.querySelectorAll('.ambient-orb').forEach((o,i)=>{o.style.transform=`translate(${x*(i+1)*8}px,${y*(i+1)*8}px)`});
 });
 
-// Hide shake hint after 6s if no shake
-setTimeout(()=>{document.getElementById('shakeHint').classList.add('hidden')},8000);
+
 </script>
 </body>
 </html>
