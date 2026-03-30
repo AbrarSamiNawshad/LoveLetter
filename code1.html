@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>3 Years of Us ❣️</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            background: radial-gradient(circle at top, #1a1a1a, #000); 
+            color: #fff; 
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .math-text { font-family: serif; font-style: italic; }
+        #forgiveBtn { transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center px-6 pb-20">
+
+    <div class="w-full pt-8 flex justify-between text-[10px] uppercase tracking-widest text-gray-500">
+        <span>Connection: Eternal ⚡</span>
+        <span>Battery: 1,096 Days 🔋</span>
+    </div>
+
+    <div class="mt-12 text-center">
+        <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-pink-500 mb-2">3 YEARS 😒🔪</h1>
+        <p class="text-gray-400 text-sm">March 31, 2026 | 1:27 AM</p>
+    </div>
+
+    <div class="glass p-6 rounded-[2rem] mt-10 text-center w-full max-w-sm shadow-2xl">
+        <h2 class="text-xs uppercase tracking-widest text-gray-400 mb-2">Mathematical Constant</h2>
+        <div class="text-4xl math-text text-pink-400 py-4">
+            Love ∝ Time
+        </div>
+        <div class="h-[1px] w-full bg-gradient-to-r from-transparent via-gray-700 to-transparent my-4"></div>
+        <p class="text-xs text-gray-500 italic">"Verified by the Nirai Fua Department"</p>
+    </div>
+
+    <div id="gameContainer" class="mt-16 text-center w-full relative h-64">
+        <p id="gameHint" class="mb-8 text-yellow-400 text-sm font-medium animate-pulse">
+            Wait, are you still mad at me? <br>
+            Tap "I Forgive You" to unlock the letter 😼
+        </p>
+        
+        <button id="forgiveBtn" class="bg-white text-black px-10 py-4 rounded-full font-bold shadow-[0_0_20px_rgba(255,255,255,0.3)] active:scale-90">
+            I Forgive You ❤️
+        </button>
+    </div>
+
+    <div id="mainMessage" class="hidden glass p-8 rounded-[2.5rem] mt-4 w-full max-w-sm text-left shadow-2xl animate-in fade-in slide-in-from-bottom-10 duration-700">
+        <div class="text-gray-200 space-y-4 leading-relaxed">
+            <p>Babe, do you even need to check the clock? 😒 It’s **1:27 AM** again.</p>
+            <p>That’s exactly **1,096 days** of me being a patient, "nirai" fua while dealing with your paglami 😩🔪</p>
+            <p>From the jealousy of Year 1 to realize I "potaied" a child in Year 2... look at us now. You’ve become my absolute peace. $Love \propto Time$ was just the start—now it's off the charts. 📈😽</p>
+            <p class="font-semibold text-pink-400">Everyday I keep dreaming to take you to my home as my wife, In Sha Allah. ❤️</p>
+            <p>I love you forever, even when you're being extra annoying (which is 90% of the time). 💖</p>
+        </div>
+        <div class="mt-10 pt-6 border-t border-gray-800 text-center">
+            <p class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-pink-500">
+                Happy 3rd Anniversary! ❣️✨
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const btn = document.getElementById('forgiveBtn');
+        const hint = document.getElementById('gameHint');
+        const msg = document.getElementById('mainMessage');
+        const container = document.getElementById('gameContainer');
+        let escapes = 0;
+
+        const moveButton = (e) => {
+            if (escapes < 6) {
+                e.preventDefault();
+                // Randomly move within the container bounds
+                const newX = (Math.random() - 0.5) * 200; 
+                const newY = (Math.random() - 0.5) * 150;
+                btn.style.transform = `translate(${newX}px, ${newY}px)`;
+                
+                const hints = ["Too slow! 💨", "Try again 😼", "Almost... no! 🔪", "Nirai fua is faster than you 😒", "Catch me if you can 🏃‍♀️"];
+                hint.innerText = hints[escapes % hints.length];
+                escapes++;
+            }
+        };
+
+        // For mobile touch
+        btn.addEventListener('touchstart', moveButton);
+
+        // Final click
+        btn.addEventListener('click', () => {
+            if (escapes >= 6) {
+                btn.style.transform = `scale(0)`;
+                btn.style.opacity = '0';
+                setTimeout(() => {
+                    btn.classList.add('hidden');
+                    hint.innerHTML = "Smart choice. I knew you'd forgive me 😉";
+                    msg.classList.remove('hidden');
+                    msg.scrollIntoView({ behavior: 'smooth' });
+                }, 300);
+            }
+        });
+    </script>
+</body>
+</html>
